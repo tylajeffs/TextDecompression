@@ -15,6 +15,9 @@ using namespace std;
 vector<string> codes;
 vector<string> characters;
 string text = "";
+int numOfBits;
+int bitCounter = 0;
+
 
 
 
@@ -72,11 +75,15 @@ int main(int argc, char** argv)
 
     }
 
-    
+    //read in the number of bits
+    string bits;
+    getline(ifs, bits);
 
-    //read in the binary portion of the file
-    string binary;
-    getline(ifs, binary);
+
+
+    //read in the charcters to decode from the file
+    string charToDecode;
+    getline(ifs, charToDecode);
 
 
 
@@ -86,21 +93,33 @@ int main(int argc, char** argv)
 
 
 
-    //print
-    cout << "This is the file" << endl << 
-
-
 
 
 
 
 
     //convert the codes into characters
-    for (int i = 0; i < binary.length(); i++)
+    for (int i = 0; i < charToDecode.length(); i++)
     {
+           //turn all the random characters into bits
 
-        //TO DO - find the index of the code in the vector and get the character that matches in the other vector. Add the character to the text string
 
+
+        
+
+        bitset<M> bits(string("1100"));
+        
+
+        //check to make sure we are at the correct number of bits
+        if(bitCounter <= numOfBits)
+        {
+            //increase counter
+            bitCounter ++;
+        }
+
+
+
+        //TODO - convert into a bitset, loop through each bit 
 
     }
 
