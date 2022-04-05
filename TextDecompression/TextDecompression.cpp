@@ -55,7 +55,7 @@ int main(int argc, char** argv)
         //check 
         if (str == "*****")
         {
-            x == false;
+            x = false;
             //break
         }
         else
@@ -86,7 +86,8 @@ int main(int argc, char** argv)
 
 
 
-
+    //print
+    cout << "This is the file" << endl << 
 
 
 
