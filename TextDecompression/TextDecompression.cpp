@@ -5,18 +5,21 @@
 #include <vector>
 #include <fstream>
 #include <string>
+#include <map>
 #include <cstdlib>
+#include <bitset>
 
 
 using namespace std;
 
 
 //global variables
-vector<string> codes;
-vector<string> characters;
-string text = "";
+map<string, string> charCodes;
+
 int numOfBits;
 int bitCounter = 0;
+string working = "";
+string output = "";
 
 
 
@@ -34,7 +37,7 @@ int main(int argc, char** argv)
     ifstream ifs;
 
     //open the file
-    ifs.open(filename, ios::in);
+    ifs.open(filename, ios::in | ios::binary);
 
     //some basic error-checking...
     if (!ifs)
@@ -69,8 +72,7 @@ int main(int argc, char** argv)
             string ch = filename.substr(1, filename.find(d));
 
             //add them into their respective vectors (2D)
-            codes.push_back(num);
-            characters.push_back(ch);
+            charCodes[num] = ch;
         }
 
     }
@@ -83,7 +85,32 @@ int main(int argc, char** argv)
 
     //read in the charcters to decode from the file
     string charToDecode;
-    getline(ifs, charToDecode);
+
+    //check to see what is next with out moving the pointer
+    while (ifs.peek() == '\n' || ifs.peek() == '\r') 
+    {
+        //if the first two are new lines, skip 
+        ifs.seekg(1, ifs.cur);
+    }
+
+    //save the current position
+    auto start = ifs.tellg();
+
+    //save end position
+    ifs.seekg(0, ifs.end);
+    auto end = ifs.tellg();
+
+    //move back to the start position
+    ifs.seekg(start);
+
+    //create a vector of all the characters
+    vector<char> bytes(end - start);
+
+    //dump the data into the vector of characters
+    ifs.read(bytes.data(), end - start);
+
+    //convert vector to string
+    charToDecode = string(bytes.data(), end - start);
 
 
 
@@ -101,53 +128,51 @@ int main(int argc, char** argv)
     //convert the codes into characters
     for (int i = 0; i < charToDecode.length(); i++)
     {
-        //turn all the random characters into bits
-        bitset<M> bits(string(charToDecode));
+        //turn the character into 8 bits
+        bitset<8> bits(charToDecode[i]);
         
 
-        //check to make sure we are at the correct number of bits
-        if(bitCounter < numOfBits)
+
+        //go through each of the bits for that character
+        for (int j = 0; j < 8; j++)
         {
-            //increase counter
-            bitCounter ++;
-
-            //put it through the tree until it reaches a leaf node (end)
 
 
+            //check to make sure we are at the correct number of bits
+            if (bitCounter < numOfBits)
+            {
+
+                //increase counter
+                bitCounter++;
+
+
+                //add one bit to the working string and check if it matches any of the character codes
+                working += bits[j];
 
 
 
+                //check to see if the working string matches one of the codes
+                if (charCodes.count(working) == 1)
+                {
+
+
+                    //the code exists, add the character to the output string
+                    output += charCodes.at(working);
+
+                    //clear the working string
+                    working = "";
+
+                }
+
+
+
+            }
 
         }
+        
 
-
-
-        //TODO - convert into a bitset, loop through each bit 
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -177,13 +202,13 @@ int main(int argc, char** argv)
 
     ofstream ofs;
 
-    ofstream MyFile(filename + ".txt");
+    ofstream MyFile(name + ".txt", ios::out | ios::binary);
 
     //ofs.open("C:/users/config/desktop/quickSorted2.txt", ios::out);
 
  
     //put the text into the file 
-    ofs << text << endl;
+    ofs << output << endl;
 
     
 
