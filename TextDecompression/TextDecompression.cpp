@@ -1,5 +1,4 @@
-// LongestCommonSubsequence.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+
 
 #include <iostream>
 #include <vector>
@@ -8,6 +7,7 @@
 #include <map>
 #include <cstdlib>
 #include <bitset>
+#include <chrono>
 
 
 using namespace std;
@@ -31,6 +31,11 @@ string output = "";
 
 int main(int argc, char** argv)
 {
+    auto starttime = chrono::high_resolution_clock::now();
+
+
+
+
 
     //get the file from the command line
     string filename = argv[1];//"C:/users/config/Desktop/pokemon.txt";
@@ -47,30 +52,50 @@ int main(int argc, char** argv)
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
     //set boolean
-    bool x = true;
 
     //get and store the line in the file
-    while(x == true)
+    while(true)
     {
         //read in the line
         string str;
-        getline(ifs, str);
+        ifs >> str;
 
 
         //check 
         if (str == "*****")
         {
-            x = false;
-            //break
+            break;
         }
         else
         {
             //split the string into the numerical code and the character
-            string d = " ";
-            string num = filename.substr(0, filename.find(d));
-            string ch = filename.substr(1, filename.find(d));
-
+            string num = str;
+            string ch;
+            ifs >> ch;
+            if (ch == "newline") {
+                ch = '\n';
+            }
+            else if (ch == "return") {
+                ch = '\r';
+            }
+            else if (ch == "tab") {
+                ch = '\t';
+            }
+            else if (ch == "space") {
+                ch = ' ';
+            }
             //add them into their respective vectors (2D)
             charCodes[num] = ch;
         }
@@ -78,8 +103,15 @@ int main(int argc, char** argv)
     }
 
     //read in the number of bits
-    string bits;
+    string bits, junk;
+    getline(ifs, junk);
     getline(ifs, bits);
+    numOfBits = stoi(bits);
+
+
+
+
+
 
 
 
@@ -129,7 +161,8 @@ int main(int argc, char** argv)
     for (int i = 0; i < charToDecode.length(); i++)
     {
         //turn the character into 8 bits
-        bitset<8> bits(charToDecode[i]);
+        bitset<8> byte(charToDecode[i]);
+        string bytee = byte.to_string();
         
 
 
@@ -147,7 +180,7 @@ int main(int argc, char** argv)
 
 
                 //add one bit to the working string and check if it matches any of the character codes
-                working += bits[j];
+                working += bytee[j];
 
 
 
@@ -200,15 +233,13 @@ int main(int argc, char** argv)
 
     //write out the new file
 
-    ofstream ofs;
-
-    ofstream MyFile(name + ".txt", ios::out | ios::binary);
+    ofstream ofs(name + "2.txt", ios::out | ios::binary);
 
     //ofs.open("C:/users/config/desktop/quickSorted2.txt", ios::out);
 
  
     //put the text into the file 
-    ofs << output << endl;
+    ofs << output;
 
     
 
@@ -219,6 +250,10 @@ int main(int argc, char** argv)
 
     //print that the file was generated
     cout << "Text File Generated.\n";
+
+    auto endtime = chrono::high_resolution_clock::now();
+    chrono::duration<double> time = endtime - starttime;
+    cout << time.count() << "s";
 
 
 }
