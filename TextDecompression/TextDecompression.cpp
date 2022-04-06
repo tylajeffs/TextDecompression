@@ -101,20 +101,23 @@ int main(int argc, char** argv)
     //convert the codes into characters
     for (int i = 0; i < charToDecode.length(); i++)
     {
-           //turn all the random characters into bits
-
-
-
-        
-
-        bitset<M> bits(string("1100"));
+        //turn all the random characters into bits
+        bitset<M> bits(string(charToDecode));
         
 
         //check to make sure we are at the correct number of bits
-        if(bitCounter <= numOfBits)
+        if(bitCounter < numOfBits)
         {
             //increase counter
             bitCounter ++;
+
+            //put it through the tree until it reaches a leaf node (end)
+
+
+
+
+
+
         }
 
 
