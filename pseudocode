@@ -1,0 +1,70 @@
+get and open file from the command line, be sure to do error checking
+
+while(true)
+{
+    read in the line, store in string
+ 
+    if (line == "*****")
+    {
+        break;
+    }
+    else
+    {
+        split the string into the numerical code and the character
+ 
+        check to see if the character (string label) is a special character, if it is, assign correct characters
+        
+        add the characters into a map
+    }
+}
+
+read in the line with the number of bits
+
+read in the characters to decode from the file as a string
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+convert the codes into characters
+
+for (int i = 0; i < charToDecode.length(); i++)
+{
+    turn the character into 8 bits
+
+    go through each of the bits for that character
+    
+    for (int j = 0; j < 8; j++)
+    {
+        if (we aren't over the number of bits given at the beginning)
+        {
+            increase the counter
+
+            add one bit to the working string and check if it matches any of the character codes
+
+            check to see if the working string matches one of the codes
+                - if it does, add the character to the output string and clear the working string
+        }
+    }
+}
+
+
+
